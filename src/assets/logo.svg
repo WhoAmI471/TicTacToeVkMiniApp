@@ -1,0 +1,25 @@
+<svg width="130.000000" height="130.000000" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>
+			Created with Pixso.
+	</desc>
+	<defs>
+		<filter id="filter_3_249_dd" x="0.000000" y="0.000000" width="130.000000" height="130.000000" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+			<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+			<feOffset dx="0" dy="0"/>
+			<feGaussianBlur stdDeviation="5"/>
+			<feComposite in2="hardAlpha" operator="out" k2="-1" k3="1"/>
+			<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+			<feBlend mode="normal" in2="BackgroundImageFix" result="effect_dropShadow_1"/>
+			<feBlend mode="normal" in="SourceGraphic" in2="effect_dropShadow_1" result="shape"/>
+		</filter>
+	</defs>
+	<rect id="shadow" width="100.000000" height="100.000000" transform="translate(15.000000 15.000000)" fill="#FFFFFF" fill-opacity="0"/>
+	<g filter="url(#filter_3_249_dd)">
+		<rect id="shadow" x="15.000000" y="15.000000" rx="15.000000" width="100.000000" height="100.000000" fill="#FFFFFF" fill-opacity="1.000000"/>
+	</g>
+	<rect id="circle" width="67.000000" height="67.000000" transform="translate(31.000000 32.000000)" fill="#FFFFFF" fill-opacity="0"/>
+	<path id="circle" d="M98 65.5C98 83.9848 82.9847 99 64.5 99C46.0153 99 31 83.9848 31 65.5C31 47.0152 46.0153 32 64.5 32C82.9847 32 98 47.0152 98 65.5ZM89.7719 65.5C89.7719 79.4446 78.4446 90.7719 64.5 90.7719C50.5554 90.7719 39.2281 79.4446 39.2281 65.5C39.2281 51.5554 50.5554 40.2281 64.5 40.2281C78.4446 40.2281 89.7719 51.5554 89.7719 65.5Z" fill="#B77A7A" fill-opacity="1.000000" fill-rule="evenodd"/>
+	<rect id="cancel" width="64.000000" height="64.000000" transform="translate(33.000000 33.000000)" fill="#FFFFFF" fill-opacity="0"/>
+	<path id="cancel" d="M65.0001 72.4735L87.9563 95.4302C90.0494 97.523 93.3378 97.523 95.4302 95.4302C97.5233 93.3374 97.5233 90.0488 95.4302 87.9561L72.4739 64.9995L95.4294 42.044C97.5219 39.9512 97.5219 36.6626 95.4294 34.5698C93.3363 32.4771 90.048 32.4771 87.9548 34.5698L65.0001 57.5253L42.0452 34.5696C39.9521 32.4768 36.6638 32.4768 34.5706 34.5696C32.4782 36.6623 32.4782 39.951 34.5706 42.0437L57.5262 64.9995L34.5699 87.9564C32.4767 90.0491 32.4767 93.3376 34.5699 95.4305C36.6623 97.5232 39.9506 97.5232 42.0438 95.4305L65.0001 72.4735Z" fill="#7A8FB7" fill-opacity="1.000000" fill-rule="evenodd"/>
+</svg>
