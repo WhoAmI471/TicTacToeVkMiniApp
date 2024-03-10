@@ -1,5 +1,8 @@
 import { calculateOverallScore } from "./CalculatePositionScore";
-import { findBoardsWon, calculateWinner } from "../components/CalculateWinner";
+import { findBoardsWon, calculateWinner } from "../components/ticTacUltimate/CalculateWinner";
+
+import tic from '../assets/tic.svg';
+import tac from '../assets/tac.svg';
 
 function possibleMoves(lastMove, gamePosition) {
   let finishedBoards = findBoardsWon(gamePosition);
@@ -30,14 +33,14 @@ export function minMaxMove(lastMove, gamePosition, xNext, depth = 0) {
   possibleMovesArray.forEach((move) => {
     let nextPosition = structuredClone(gamePosition);
     if (xNext) {
-      nextPosition[move[0]][move[1]] = "X";
+      nextPosition[move[0]][move[1]] = tic;
     } else {
-      nextPosition[move[0]][move[1]] = "O";
+      nextPosition[move[0]][move[1]] = tac;
     }
     const winner = calculateWinner(findBoardsWon(nextPosition));
-    if (winner && winner[0] === "X") {
+    if (winner && winner[0] === tic) {
       scores.push(1000000);
-    } else if (winner && winner[0] === "O") {
+    } else if (winner && winner[0] === tac) {
       scores.push(-1000000);
     } else {
       let positionScore = calculateOverallScore(nextPosition);

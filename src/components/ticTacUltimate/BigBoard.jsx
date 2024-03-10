@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { calculateWinner, findBoardsWon } from "./CalculateWinner";
 import SmallBoard from "./Smallboard";
-import { minMaxMove } from "../AI/Ai";
+import { minMaxMove } from "../../AI/Ai";
 
-const BigBoard = ({ robot, appStatus, playerIsX }) => {
+import tic from '../../assets/tic.svg';
+import tac from '../../assets/tac.svg';
+
+const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
   let initalPosition = [];
   for (let i = 0; i < 9; i++) {
     initalPosition.push(Array(9).fill(null));
   }
   const [gamePosition, setGamePosition] = useState(initalPosition);
   const [lastMove, setLastMove] = useState(null);
-
-  console.log("123123");
+  const [movesHistory, setMovesHistory] = useState([]); // Хранение всех ходов
 
   let moveCount = 0;
   gamePosition.forEach((board) => {
@@ -36,9 +38,9 @@ const BigBoard = ({ robot, appStatus, playerIsX }) => {
   function updateGame(board, position, x = xNext) {
     if (appStatus === "aiGame" && xNext !== playerIsX) return;
     let nextPosition = structuredClone(gamePosition);
-    let player = "X";
+    let player = tic;
     if (!x) {
-      player = "O";
+      player = tac;
     }
     nextPosition[board][position] = player;
     setGamePosition(nextPosition);
@@ -59,12 +61,13 @@ const BigBoard = ({ robot, appStatus, playerIsX }) => {
 
   if (xNext !== playerIsX && appStatus === "aiGame" && !overallWinner) {
     const robotMove = minMaxMove(lastMove + 0, gamePosition, xNext, robot)[1];
-    const robotPlayer = playerIsX ? "O" : "X";
+    const robotPlayer = playerIsX ? tac : tic;
     let nextPosition = structuredClone(gamePosition);
     nextPosition[robotMove[0]][robotMove[1]] = robotPlayer;
     setTimeout(() => {
       setGamePosition(nextPosition);
       setLastMove(robotMove[1]);
+      setMovesHistory([...movesHistory, { board: robotMove[0], position: robotMove[1] }]);
     }, 1000);
   }
 
@@ -104,7 +107,7 @@ const BigBoard = ({ robot, appStatus, playerIsX }) => {
       if (boardsFinished[k] && boardsFinished[k] !== "draw") {
         children.push(
           <div className="bigScore" key={k + "bigScore"}>
-            {boardsFinished[k]}
+            <img src={boardsFinished[k]} style={{width: '100%', height: '100%'}}/>
           </div>
         );
       }
@@ -119,6 +122,15 @@ const BigBoard = ({ robot, appStatus, playerIsX }) => {
       <table>
         <tbody>{rows}</tbody>
       </table>
+      {/* Отображение всех ходов */}
+      <div className="moves-history">
+        <h3>Moves History:</h3>
+        <ul>
+          {movesHistory.map((move, index) => (
+            <li key={index}>Board: {move.board}, Position: {move.position}</li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 }

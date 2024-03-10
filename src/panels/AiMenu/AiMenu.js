@@ -1,5 +1,5 @@
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import PlayAsXToggle from "../components/PlayAsXToggle";
+import PlayAsXToggle from "../../components/PlayAsXToggle";
 
 export const AiMenu = ({ togglePlayerisX, playerIsX, robotMenuClick }) => {
 

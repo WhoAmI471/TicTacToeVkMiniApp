@@ -38,6 +38,8 @@ body {
   max-width: 33%;
   max-height: 33%;
   white-space: nowrap;
+  margin: 2.5px;
+  border-radius: 5px;
 }
 
 .highlighted {

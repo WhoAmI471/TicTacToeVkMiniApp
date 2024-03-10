@@ -1,6 +1,6 @@
-export { AiMenu } from './AiMenu';
-export { Home } from './Home';
-export { HostMenu } from './HostMenu';
-export { JoinMenu } from './JoinMenu';
-export { NetworkMenu } from './NetworkMenu';
-export { SmallBoardGame } from './SmallBoardGame';
+export { AiMenu } from './AiMenu/AiMenu';
+export { Home } from './Home/Home';
+export { HostMenu } from './HostMenu/HostMenu';
+export { JoinMenu } from './JoinMenu/JoinMenu';
+export { NetworkMenu } from './NetworkMenu/NetworkMenu';
+export { SmallBoardGame } from './SmallBoardGame/SmallBoardGame';

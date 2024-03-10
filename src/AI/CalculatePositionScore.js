@@ -1,4 +1,8 @@
-import { lines } from "../components/CalculateWinner";
+import { lines } from "../components/ticTacUltimate/CalculateWinner";
+
+import tic from '../assets/tic.svg';
+import tac from '../assets/tac.svg';
+
 
 export function calculateOverallScore(position) {
   let scores = [];
@@ -37,9 +41,9 @@ function calculateLineScore(line, board) {
   let xCount = 0;
   let oCount = 0;
   for (let i = 0; i < 3; i++) {
-    if (board[line[i]] === "X") {
+    if (board[line[i]] === tic) {
       xCount++;
-    } else if (board[line[i]] === "O") {
+    } else if (board[line[i]] === tac) {
       oCount++;
     }
   }

@@ -1,8 +1,11 @@
 import { Panel, PanelHeader, PanelHeaderButton, Group } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import Arrow from '../assets/arrow.svg';
+import Arrow from '../../assets/arrow.svg';
+import BlueBack from '../../assets/BlueBack.svg';
 
-import Board from "../components/ticTacClassic/Board";
+import Board from "../../components/ticTacClassic/Board";
+
+import './SmallBoardGame.css';
 
 export const SmallBoardGame = ({id, botActive, botLevel, boardSize}) => {
   const routeNavigator = useRouteNavigator();

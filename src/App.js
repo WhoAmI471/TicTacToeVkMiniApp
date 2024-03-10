@@ -3,10 +3,16 @@ import bridge from '@vkontakte/vk-bridge';
 import { View, SplitLayout, SplitCol, ScreenSpinner, ModalRoot, ModalCard, Group, Button } from '@vkontakte/vkui';
 import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
-import { Home, AiMenu, NetworkMenu, HostMenu, JoinMenu, SmallBoardGame } from './panels';
 import { DEFAULT_VIEW_PANELS } from './routes';
 
-import BigBoard from "./components/BigBoard";
+import { Home } from './panels/Home/Home';
+import { AiMenu } from './panels/AiMenu/AiMenu';
+import { NetworkMenu } from './panels/NetworkMenu/NetworkMenu';
+import { HostMenu } from './panels/HostMenu/HostMenu';
+import { JoinMenu } from './panels/JoinMenu/JoinMenu';
+import { SmallBoardGame } from './panels/SmallBoardGame/SmallBoardGame';
+
+import BigBoard from "./components/ticTacUltimate/BigBoard";
 
 export const App = () => {
   const { panel: activePanel = DEFAULT_VIEW_PANELS.WELCOME_MENU } = useActiveVkuiLocation();
@@ -16,14 +22,13 @@ export const App = () => {
 
   const [reset, setReset] = useState(0);
   const [robot, setRobot] = useState(2);
+  const [socket, setSocket] = useState(null);
   const [status, setStatus] = useState("home");
   const [playerIsX, setPlayerIsX] = useState(true);
 
   const [botActive, setBotActive] = useState(0);
   const [botLevel, setBotLevel] = useState(2);
   const [boardSize, setBoardSize] = useState(2);
-
-  const [activeModal, setActiveModal] = useState('');
 
   function resetBoard() {
     setReset(reset + 1);
@@ -51,7 +56,11 @@ export const App = () => {
     fetchData();
   }, []);
 
-  
+  useEffect(() => {
+    if (fetchedUser){
+      console.log(fetchedUser);
+    }
+  }, [fetchedUser])
 
   return (
     <SplitLayout popout={popout}>
@@ -72,6 +81,7 @@ export const App = () => {
           />
           <BigBoard
             id="bigBoard"
+            socket={socket}
             robot={robot}
             key={reset}
             appStatus={status}
@@ -84,8 +94,19 @@ export const App = () => {
             robotMenuClick={robotMenuClick}
           />
           <NetworkMenu id="networkMenu" setStatus={statusUpdate} />
-          <HostMenu id="hostMenu" togglePlayerisX={togglePlayerisX} playerIsX={playerIsX} />
-          <JoinMenu id="joinMenu" />
+          <HostMenu 
+            id="hostMenu" 
+            togglePlayerisX={togglePlayerisX} 
+            playerIsX={playerIsX} 
+            socket={socket}
+            setSocket={setSocket}
+          />
+          <JoinMenu 
+            id="joinMenu" 
+            setStatus={statusUpdate} 
+            socket={socket}
+            setSocket={setSocket}
+          />
         </View>
       </SplitCol>
     </SplitLayout>
