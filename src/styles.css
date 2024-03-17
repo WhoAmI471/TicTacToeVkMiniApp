@@ -12,7 +12,7 @@ table {
 
 body {
   font-family: sans-serif;
-  text-align: center;
+ 
   padding: 0;
 }
 
@@ -110,14 +110,7 @@ td {
   margin-top: 1rem;
 }
 
-.resetButton {
-  /* right: 1rem;
-  margin: 0.4rem;
-  background: #76bdd5;
-  border: 0px;
-  border-radius: 0.4rem; */
-  margin: 5px 10px;
-}
+
 
 .headerText {
   flex-grow: 4;

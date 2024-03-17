@@ -1,4 +1,3 @@
-export { AiMenu } from './AiMenu/AiMenu';
 export { Home } from './Home/Home';
 export { HostMenu } from './HostMenu/HostMenu';
 export { JoinMenu } from './JoinMenu/JoinMenu';

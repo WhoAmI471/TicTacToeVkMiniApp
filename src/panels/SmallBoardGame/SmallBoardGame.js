@@ -1,7 +1,9 @@
 import { Panel, PanelHeader, PanelHeaderButton, Group } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
-import Arrow from '../../assets/arrow.svg';
+// import Arrow from '../../assets/BackIcon.svg';
 import BlueBack from '../../assets/BlueBack.svg';
+
+import { Icon28ChevronBack } from '@vkontakte/icons'
 
 import Board from "../../components/ticTacClassic/Board";
 
@@ -15,7 +17,7 @@ export const SmallBoardGame = ({id, botActive, botLevel, boardSize}) => {
     <PanelHeader
       before={
         <PanelHeaderButton onClick={() => routeNavigator.push('/')}>
-          <img src={Arrow}/>
+          <Icon28ChevronBack />
         </PanelHeaderButton>
       }
     >

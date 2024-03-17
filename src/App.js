@@ -6,13 +6,13 @@ import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-app
 import { DEFAULT_VIEW_PANELS } from './routes';
 
 import { Home } from './panels/Home/Home';
-import { AiMenu } from './panels/AiMenu/AiMenu';
 import { NetworkMenu } from './panels/NetworkMenu/NetworkMenu';
 import { HostMenu } from './panels/HostMenu/HostMenu';
 import { JoinMenu } from './panels/JoinMenu/JoinMenu';
 import { SmallBoardGame } from './panels/SmallBoardGame/SmallBoardGame';
 
 import BigBoard from "./components/ticTacUltimate/BigBoard";
+import WebSocketComponent from "./components/ticTacUltimate/WebSocketComponent";
 
 export const App = () => {
   const { panel: activePanel = DEFAULT_VIEW_PANELS.WELCOME_MENU } = useActiveVkuiLocation();
@@ -25,6 +25,7 @@ export const App = () => {
   const [socket, setSocket] = useState(null);
   const [status, setStatus] = useState("home");
   const [playerIsX, setPlayerIsX] = useState(true);
+  const [clientId, setClientId] = useState(null); // Добавляем состояние для client_id
 
   const [botActive, setBotActive] = useState(0);
   const [botLevel, setBotLevel] = useState(2);
@@ -59,6 +60,8 @@ export const App = () => {
   useEffect(() => {
     if (fetchedUser){
       console.log(fetchedUser);
+      setClientId(fetchedUser.id);
+      // setClientId(Date.now());
     }
   }, [fetchedUser])
 
@@ -68,16 +71,17 @@ export const App = () => {
         <View activePanel={activePanel}>
           <Home 
             id="home" 
-            setStatus={statusUpdate} 
-            setBotActive={setBotActive} 
-            setBotLevel={setBotLevel} 
-            setBoardSize={setBoardSize} 
+            setStatus={statusUpdate}
+            setBotActive={setBotActive}
+            setBotLevel={setBotLevel}
+            setBoardSize={setBoardSize}
+            robotMenuClick={robotMenuClick}
           />
           <SmallBoardGame 
             id="smallBoard" 
-            botActive={botActive} 
-            botLevel={botLevel} 
-            boardSize={boardSize} 
+            botActive={botActive}
+            botLevel={botLevel}
+            boardSize={boardSize}
           />
           <BigBoard
             id="bigBoard"
@@ -87,23 +91,23 @@ export const App = () => {
             appStatus={status}
             playerIsX={playerIsX}
           />
-          <AiMenu
-            id="aiMenu"
-            togglePlayerisX={togglePlayerisX}
-            playerIsX={playerIsX}
-            robotMenuClick={robotMenuClick}
+          <WebSocketComponent
+            id="OnlineBigBoard"
+            robot={robot}
+            appStatus={status}
+            clientId={clientId}
           />
           <NetworkMenu id="networkMenu" setStatus={statusUpdate} />
           <HostMenu 
-            id="hostMenu" 
-            togglePlayerisX={togglePlayerisX} 
-            playerIsX={playerIsX} 
+            id="hostMenu"
+            togglePlayerisX={togglePlayerisX}
+            playerIsX={playerIsX}
             socket={socket}
             setSocket={setSocket}
           />
           <JoinMenu 
-            id="joinMenu" 
-            setStatus={statusUpdate} 
+            id="joinMenu"
+            setStatus={statusUpdate}
             socket={socket}
             setSocket={setSocket}
           />
