@@ -6,40 +6,22 @@ import { minMaxMove } from "../../AI/Ai";
 import tic from '../../assets/tic.svg';
 import tac from '../../assets/tac.svg';
 
-const BigBoard = ({ socket, robot, appStatus, playerIsX, turnNext }) => {
+const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
+  
+  const [ticPlayerScore, setTicPlayerScore] = useState(0);
+  const [tacPlayerScore, setTacPlayerScore] = useState(0);
+
+  const [haveWinner, setHaveWinner] = useState(false);
+
   let initalPosition = [];
   for (let i = 0; i < 9; i++) {
     initalPosition.push(Array(9).fill(null));
   }
   const [gamePosition, setGamePosition] = useState(initalPosition);
   const [lastMove, setLastMove] = useState(null);
-
-  const [movesHistory, setMovesHistory] = useState([]);
-
-  const [boardTurn, setBoardTurn] = useState(null);
-  const [lastBoardTurn, setLastBoardTurn] = useState(null);
-  const [boardPosition, setBoardPosition] = useState(null);
-  const [lastBoardPosition, setLastBoardPosition] = useState(null);
-
-  const [next, setNext] = useState(((turnNext === "X") == playerIsX));
   
   const opponentSymbol = playerIsX ? tac : tic;
   const mySymbol = !playerIsX ? tac : tic;
-
-  const messageUpdate = {
-    method: "update",
-    turn: opponentSymbol,
-    board: boardTurn,
-    lastMove: boardPosition,
-    movesHistory: movesHistory
-  };
-
-  const messageOponentMove = {
-    method: "opponentMove",
-    turn: opponentSymbol,
-    board: boardTurn,
-    position: boardPosition,
-  };
 
   let moveCount = 0;
   gamePosition.forEach((boardTu) => {
@@ -81,12 +63,8 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX, turnNext }) => {
     
     setGamePosition(nextPosition);
     setLastMove(position);
-    setMovesHistory([...movesHistory, { board, position }]);
   
     console.log(`${currentPlayer} made a move nextPosition[${board}][${position}]`);
-    
-    setBoardPosition(position);
-    setBoardTurn(board);
 
     if (socket) {
       console.log(`SendMove board: ${board}, position: ${position}`);
@@ -110,31 +88,13 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX, turnNext }) => {
             const nextPosition = structuredClone(prevGamePosition);
             nextPosition[response.board][response.position] = opponentSymbol;
             setLastMove(response.position);
-            setBoardPosition(response.position);
-            setBoardTurn(response.board);
+
             return nextPosition;
           });
         } 
       };
     }
   }, [socket]);
-  
-  // useEffect(() => {
-  // async function SendMove() {
-  //   if (socket && boardTurn !== null && boardPosition !== null){
-  //     // if (lastBoardPosition !== boardPosition && lastBoardTurn !== boardTurn){
-  //       // if (next){
-  //         console.log(`Sending move for opponent nextPosition[${boardTurn}][${boardPosition}]`);
-  
-  //         setNext(false);
-  //         setLastBoardPosition(boardPosition);
-  //         setLastBoardTurn(boardTurn);
-  //         socket.send(JSON.stringify(messageOponentMove));
-  //       // }
-  //     // }
-  //   }
-  // }
-  // }, [boardTurn, boardPosition])
 
   const boardsFinished = findBoardsWon(gamePosition);
   let overallWinner = calculateWinner(boardsFinished);
@@ -158,46 +118,21 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX, turnNext }) => {
     }, 1000);
   }
 
-  // if (xNext !== playerIsX && appStatus !== "aiGame" && appStatus !== "localhost" && !overallWinner && socket) {
-  //   console.log(turnNext);
-  //   socket.onmessage = (event) => {
-  //     console.log(1);
-  //     const response = JSON.parse(event.data);
-  //     if (response.method === "opponentMove") {
-  //       console.log(2);
-
-  //       // nextPosition[response.board][response.lastMove] = opponentSymbol;
-  //       // console.log(`nextPosition[${response.board}][${response.lastMove}]`);
-  //       // setGamePosition(nextPosition);
-  //       // setLastMove(response.lastMove);
-  //       let nextPosition = structuredClone(gamePosition);
-
-  //       nextPosition[response.board][response.lastMove] = opponentSymbol;
-    
-  //       setGamePosition(nextPosition);
-  //       setLastMove(response.lastMove);
-  //       setCurrentTurn(xNext ? "O" : "X"); // Устанавливаем текущий ход после обновления игровой позиции
-  //       // setMovesHistory([...movesHistory, { board, position }]);
-        
-  //       // console.log(`movesHistory: ${movesHistory}`);
-  //       setBoardPosition(position);
-  //       setBoardTurn(board);
-  //       // updateGame(response.board, response.position, opponentSymbol === currentTurn);
-
-  //       console.log("updateForOponent");
-  //     } 
-  //   };
-  // }
-
-  if (typeof overallWinner === "object") {
-    status =
-      "Congratulations! Player " +
-      overallWinner[0] +
-      " won. Would you like to play again?";
-  } else if (overallWinner === "draw") {
-    status =
-      "No more legal moves. The game is a draw. Would you like to play again?";
-  }
+  useEffect(() => {
+    if (typeof overallWinner === "object") {
+      setHaveWinner(true);
+      if (xNext){
+        setTacPlayerScore(tacPlayerScore + 1);
+      } else {
+        setTicPlayerScore(ticPlayerScore + 1);
+      }
+    } 
+      // else if (overallWinner === "draw") {
+      //   status =
+      //     "No more legal moves. The game is a draw. Would you like to play again?";
+      // }
+  }, [xNext])
+  
 
   let rows = [];
   for (let i = 0; i < 3; i++) {
@@ -234,13 +169,47 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX, turnNext }) => {
     rows.push(<tr key={i + "row"}>{boardArray}</tr>);
   }
 
+  const PlayAgain = () => {
+    if (haveWinner && (appStatus === "localGame" || appStatus === "aiGame")) {
+      moveCount = 0;
+
+      setGamePosition(initalPosition);
+      setLastMove(null);
+      setHaveWinner(false);
+    }
+  }
+
   return (
-    <>
-      <div className="status">{status}</div>
+    <div 
+      onClick={() => PlayAgain()}
+      style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        width: '100%', 
+        height: '100vh', 
+        justifyContent: 'center' 
+      }} >
+      {/* <div className="status">{status}</div> */}
+
+      <div className="info">
+        <div className={`sides ${xNext ? 'active' : ''}`}>
+          <img src={tic} className='tic' alt="tic" />
+        </div>
+
+        <h1 className="score">
+          <div> {ticPlayerScore}</div> <div> : </div> <div> {tacPlayerScore} </div>
+        </h1>
+
+        <div className={`sides ${!xNext ? 'active' : ''}`}>
+          <img src={tac} className='tac' alt="tac" />
+        </div>
+      </div>
+
       <table>
         <tbody>{rows}</tbody>
       </table>
-    </>
+    </div>
   );
 }
 

@@ -2699,6 +2699,11 @@ sisteransi@^1.0.5:
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
   integrity sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
 
+socket.io-react@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/socket.io-react/-/socket.io-react-1.2.0.tgz#377468613d7079321404f187d6cc9bc246cafae7"
+  integrity sha512-7QJE2m+w6FHuatIQeFoo0sz0lZbGJkWQnfz5lAAJEGYoWGyWrSN1/sHrwhEMFypuvlZrkoICR5pPoh3+smdlRQ==
+
 sonic-boom@^0.7.5:
   version "0.7.7"
   resolved "https://registry.yarnpkg.com/sonic-boom/-/sonic-boom-0.7.7.tgz#d921de887428208bfa07b0ae32c278de043f350a"

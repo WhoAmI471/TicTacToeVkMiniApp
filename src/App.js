@@ -57,11 +57,30 @@ export const App = () => {
     fetchData();
   }, []);
 
+        
+  async function SendLinkGame () {
+    bridge.send("VKWebAppAddToChat", {
+      action_title: 'Показать погоду'
+    });
+    bridge.send("VKWebAppAddToChatResult")
+      .then((data) => {
+        if (data.result) {
+          // Обработка события в случае успеха
+          console.log(data);
+        } else {
+          // Ошибка
+        }
+      })
+      .catch((error) => {
+        // Обработка события в случае ошибки
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
     if (fetchedUser){
       console.log(fetchedUser);
       setClientId(fetchedUser.id);
-      // setClientId(Date.now());
     }
   }, [fetchedUser])
 
@@ -76,6 +95,7 @@ export const App = () => {
             setBotLevel={setBotLevel}
             setBoardSize={setBoardSize}
             robotMenuClick={robotMenuClick}
+            SendLinkGame={SendLinkGame}
           />
           <SmallBoardGame 
             id="smallBoard" 

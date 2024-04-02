@@ -25,7 +25,7 @@ import onlineGame from '../../assets/onlineGame.svg';
 import iconGame from '../../assets/iconGame.svg'
 
 
-export const Home = ({ id, setStatus, setBotActive, setBotLevel, setBoardSize, robotMenuClick }) =>{
+export const Home = ({ id, setStatus, setBotActive, setBotLevel, setBoardSize, robotMenuClick, SendLinkGame }) => {
 
     const [activeModal, setActiveModal] = useState('');
 
@@ -119,16 +119,10 @@ export const Home = ({ id, setStatus, setBotActive, setBotLevel, setBoardSize, r
     };
 
     const handle2PlayerOnlineClick = () => {
+        SendLinkGame();
         routeNavigator.push('OnlineBigBoard');
         setStatus("OnlineBigBoard");
     };
-
-    const handlePlayAgainstComputerClick = () => {
-        routeNavigator.push('aiMenu');
-        setStatus("aiMenu");
-    };
-
-
 
 
     return(
