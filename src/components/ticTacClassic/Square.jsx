@@ -3,13 +3,13 @@ function Square({ value, setSquareValue, size }) {
     <button 
       onClick={setSquareValue}
       style={{
-        width: size,
-        height: size,
+        width: '14vmin',
+        height:'14vmin',
         color: value ? '#61dafb' : '#282c34',
-        marginLeft: '5px',
-        marginRight: '5px',
-        marginBottom: '10px',
-        borderRadius: '15px',
+        marginLeft: '2px',
+        marginRight: '2px',
+        marginBottom: '4px',
+        borderRadius: '10px',
         boxShadow: '0px 0px 15px 0px rgba(0, 0, 0, 0.1)',
         border: 'none',
         background: 'rgb(255, 255, 255)'

@@ -295,34 +295,36 @@ const Board = ({botActive, botLevel, boardSize}) => {
   const squareSize = `${(200 / boardSize)}px`; // Вычисляем размер клетки
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100vh', justifyContent: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <div className="info">
-        <div className={`sides ${isNextX ? 'active' : ''}`}>
-          <img src={tic} className='tic' alt="tic" />
+        <div className={`sides ${isNextX ? 'active' : ''}`} >
+          <img style={{width: '5vmin',height:'5vmin'}} src={tic} className='tic' alt="tic" />
         </div>
 
-        <h1 className="score">
+        <div className="score">
           <div> {ticPlayer}</div> <div> : </div> <div> {tacPlayer} </div>
-        </h1>
+        </div>
 
         <div className={`sides ${!isNextX ? 'active' : ''}`}>
-          <img src={tac} className='tac' alt="tac" />
+          <img style={{width: '5vmin',height:'5vmin'}} src={tac} className='tac' alt="tac" />
         </div>
       </div>
 
-      <div className="board" style={{ 
+    <div className='board-game'>
+       <div className="board" style={{ 
         display: 'grid',
-        gridTemplateColumns: `repeat(${boardSize}, ${squareSize})`,
-        gridTemplateRows: `repeat(${boardSize}, ${squareSize})`,
+        gridTemplateColumns: `repeat(${boardSize}, auto`,
+        gridTemplateRows: `repeat(${boardSize}, auto)`,
         gap: '5px',
-        width: (boardSize * (100 / boardSize) + (boardSize - 1) * 5) + 'px', // Учитываем промежутки между клетками
-        margin: 'auto', // Центрирование по горизонтали
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        marginRight: '5px'
       }}>
         {squares.map((square, index) => (
           <Square key={index} value={square} setSquareValue={() => setSquareValue(index)} size={squareSize} />
         ))}
       </div>
+    </div>
+     
     </div>
   );
 }

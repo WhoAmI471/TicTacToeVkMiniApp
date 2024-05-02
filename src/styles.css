@@ -8,6 +8,7 @@ table {
   margin-bottom: 1.5rem;
   border-collapse: collapse;
   border-style: hidden;
+  white-space:nowrap ;
 }
 
 body {
@@ -16,16 +17,19 @@ body {
   padding: 0;
 }
 
+#root {
+  height: 100%;
+}
 
 
 .info {
   margin-top: 15px;
-  width: 30%;
+ 
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  
 }
 
 .score {
@@ -39,7 +43,6 @@ body {
   letter-spacing: 0px;
   justify-content: center;
   align-items: center;
-  padding-bottom: 10px;
 }
 
 .tic, .tac {
@@ -48,8 +51,8 @@ body {
 }
 
 .sides {
-  min-width: 78px;
-  min-height: 78px;
+  min-width: 7vmin;
+  min-height:7vmin;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,7 +60,7 @@ body {
 
 .active {
     
-  border-radius: 15px;
+  border-radius: 8px;
 
   background: rgb(232, 232, 232);
 }
@@ -65,6 +68,10 @@ body {
 .header {
   display: flex;
   flex-wrap: wrap;
+}
+
+.vkuiGroup{
+  padding-top: 3px;
 }
 
 .square {
@@ -79,12 +86,11 @@ body {
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 2rem;
-  max-width: 33%;
-  max-height: 33%;
-  white-space: nowrap;
-  margin: 2.5px;
+  width: 7vw;
+  height: 7vw;
+  margin: 2px;
   border-radius: 5px;
+  
 }
 
 .highlighted {

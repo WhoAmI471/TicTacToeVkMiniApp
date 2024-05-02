@@ -1,5 +1,5 @@
 export { Home } from './Home/Home';
-export { HostMenu } from './HostMenu/HostMenu';
-export { JoinMenu } from './JoinMenu/JoinMenu';
-export { NetworkMenu } from './NetworkMenu/NetworkMenu';
 export { SmallBoardGame } from './SmallBoardGame/SmallBoardGame';
+export { BigBoardGame } from './BigBoardGame/BigBoardGame';
+export { Leaderboard } from './Leaderboard/Leaderboard';
+export { Shop } from './Shop/Shop';

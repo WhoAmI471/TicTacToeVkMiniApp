@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
-import BigBoard from "./BigBoard";
-import StandbyScreen from "./StandbyScreen";
 
-const WebSocketComponent = ({ robot, appStatus, clientId }) => {
+import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+
+import StandbyScreen from "./StandbyScreen";
+import { BigBoardGame } from "../../panels/BigBoardGame/BigBoardGame";
+
+const WebSocketComponent = ({ panelHeaderText, robot, appStatus, clientId, currentBack }) => {
+  const routeNavigator = useRouteNavigator();
+
   const [ws, setWs] = useState(null);
   const [isOpponentFound, setIsOpponentFound] = useState(false);
   const [symbol, setSymbol] = useState(null);
   const [turnNext, setTurnNext] = useState(null);
-
+  // http://127.0.0.1:8000 
+  // wss://tictactoevkminiappwebsocket.onrender.com
   useEffect(() => {
-    const socket = new WebSocket(`wss://tictactoevkminiappwebsocket.onrender.com/ws/${clientId}`);
+    const socket = new WebSocket(`wss://tictactoevkminiappwebsocket.onrender.com/ws/${clientId}/0`);
     setWs(socket);
 
     return () => {
@@ -20,7 +26,7 @@ const WebSocketComponent = ({ robot, appStatus, clientId }) => {
   useEffect(() => {
     if (!ws) return;
   
-    console.log("kajsdhfiuasnviavouiewrnkldjansoinanvpewunpuroi");
+    // console.log("kajsdhfiuasnviavouiewrnkldjansoinanvpewunpuroi");
     ws.onmessage = (event) => {
       const response = JSON.parse(event.data);
   
@@ -36,25 +42,37 @@ const WebSocketComponent = ({ robot, appStatus, clientId }) => {
   
     ws.onclose = () => {
       console.log("WebSocket disconnected");
+      routeNavigator.push('/');
     };
   
     return () => {
       ws.close();
+      routeNavigator.push('/');
     };
   }, [ws]);
 
   return (
     <div>
       {isOpponentFound ? (
-        <>
-          <BigBoard
-            robot={robot}
-            appStatus={appStatus}
-            playerIsX={symbol === 'X'}
-            socket={ws}
-            turnNext={turnNext}
-          />
-        </>
+        // <>
+        //   <div className="big-board-game">       
+        //     <BigBoard
+        //       robot={robot}
+        //       appStatus={appStatus}
+        //       playerIsX={symbol === 'X'}
+        //       socket={ws}
+        //       turnNext={turnNext}
+        //     />
+        //   </div>
+        // </>
+        <BigBoardGame 
+          panelHeaderText={panelHeaderText} 
+          socket={ws} 
+          robot={robot} 
+          appStatus={appStatus} 
+          playerIsX={symbol === 'X'} 
+          turnNext={turnNext} 
+          currentBack={currentBack} />
       ) : (
         <StandbyScreen />
       )}

@@ -25,31 +25,35 @@ import onlineGame from '../../assets/onlineGame.svg';
 import iconGame from '../../assets/iconGame.svg'
 
 
-export const Home = ({ id, setStatus, setBotActive, setBotLevel, setBoardSize, robotMenuClick, SendLinkGame }) => {
+export const Home = ({ id, setStatus, setBotActive, setBotLevel, setBoardSize, robotMenuClick, SendLinkGame, setPanelHeaderText, 
+    setCurrentBack }) => {
 
     const [activeModal, setActiveModal] = useState('');
-
     const routeNavigator = useRouteNavigator();
-
+    
     const modal = (
         <ModalRoot activeModal={activeModal}>
-            <ModalCard id="smallBoardWithFriend" onClose={() => setActiveModal(null)}>
+            <ModalCard id="smallBoard" onClose={() => setActiveModal(null)}>
+                <Text style={{fontSize:'16pt', fontWeight:'500pt',marginBottom:'15px',textAlign:'center'}}>Выберите размер игрового поля:</Text>
                 <Group style={{display:'flex'}}>
                     <Button
-                     className="resetButton" 
-                     onClick={() => playerScreenClickSmallBoard(3)}
-                     size="l" appearance="accent" mode="secondary" stretched
-                     > 3x3 </Button>
+                        className="resetButton" 
+                        onClick={() => playerScreenClickSmallBoard(3)}
+                        size="l" appearance="accent" mode="secondary" stretched
+                    > 
+                        3x3 
+                    </Button>
                     <Button 
-                    className="resetButton TwO" 
-                    onClick={() => playerScreenClickSmallBoard(5)}
-                    size="l" appearance="accent" mode="secondary" stretched
+                        className="resetButton TwO" 
+                        onClick={() => playerScreenClickSmallBoard(5)}
+                        size="l" appearance="accent" mode="secondary" stretched
                     >
-                     5x5 </Button>
+                        5x5 
+                    </Button>
                 </Group>
             </ModalCard>
             
-            <ModalCard id="bigBoardWithFriend" onClose={() => setActiveModal(null)}>
+            <ModalCard id="bigBoardRobot" onClose={() => setActiveModal(null)}>
                 <Text style={{fontSize:'16pt', fontWeight:'500pt',marginBottom:'15px',textAlign:'center'}}>Выберите сложность:</Text>
                 <Button
                     className="resetButton"
@@ -88,19 +92,38 @@ export const Home = ({ id, setStatus, setBotActive, setBotLevel, setBoardSize, r
                     Мастерский
                 </Button>
             </ModalCard>
+
+            <ModalCard id="bigBoardOnline" onClose={() => setActiveModal(null)}>
+                <Text style={{fontSize:'16pt', fontWeight:'500pt',marginBottom:'15px',textAlign:'center'}}>Выберите размер игрового поля:</Text>
+                <Group style={{display:'flex'}}>
+                    <Button
+                        className="resetButton" 
+                        onClick={() => handle2PlayerOnlineClick()}
+                        size="l" appearance="accent" mode="secondary" stretched
+                    > 
+                        Поиск соперника
+                    </Button>
+                    <Button 
+                        className="resetButton TwO" 
+                        onClick={() => {
+                            SendLinkGame();
+                            handle2PlayerOnlineClick();
+                        }}
+                        size="l" appearance="accent" mode="secondary" stretched
+                    >
+                        Пригласить друга
+                    </Button>
+                </Group>
+            </ModalCard>
         </ModalRoot>
     );
 
-    
-    const handleRobotMenuClick = (difficult) => {
-        robotMenuClick(difficult);
-        routeNavigator.push('/bigBoard');
-    }
 
     const singleplayerClick = () => {
         setBotActive(true);
         setBotLevel("easy");
         setBoardSize(3);
+        setCurrentBack('blue');
 
         routeNavigator.push('smallBoard');
     }
@@ -109,21 +132,40 @@ export const Home = ({ id, setStatus, setBotActive, setBotLevel, setBoardSize, r
         setBotActive(false);
         setBotLevel("easy");
         setBoardSize(boardSize);
+        setCurrentBack('red');
 
         routeNavigator.push('smallBoard');
     };
+    
+    const handleRobotMenuClick = (difficult) => {
+        robotMenuClick(difficult);
+        routeNavigator.push('/bigBoard');
+        setPanelHeaderText('Игра с ботом');
+        setCurrentBack('blue');
+    }
 
     const handle2PlayerScreenClick = () => {
         routeNavigator.push('bigBoard');
         setStatus("localGame");
+        setPanelHeaderText('Игра с другом');
+        setCurrentBack('red');
     };
 
     const handle2PlayerOnlineClick = () => {
-        SendLinkGame();
         routeNavigator.push('OnlineBigBoard');
         setStatus("OnlineBigBoard");
+        setPanelHeaderText('Игра онлайн');
+        setCurrentBack('green');
     };
 
+    const shopClick = () => {
+        routeNavigator.push('shop');
+        setStatus("shop");
+    };
+    const leaderboardClick = () => {
+        routeNavigator.push('leaderboard');
+        setStatus("leaderboard");
+    };
 
     return(
         <SplitLayout modal={modal}>
@@ -136,12 +178,12 @@ export const Home = ({ id, setStatus, setBotActive, setBotLevel, setBoardSize, r
                 {/* Там где место в рейтинге и выбор кастома  */}
                 <CardGrid size="m" style={{marginTop: '10px'}}>
 
-                        <Card className="rating-card">
+                        <Card className="rating-card" onClick={leaderboardClick}>
                             <Text className="name-card-home" >Место в рейтинге:</Text>
                             <Text className="namber-rating">1435</Text>
                         </Card>
 
-                        <Card className="rating-card">
+                        <Card className="rating-card" onClick={shopClick}>
                             <Text className="name-card-home">Выбрать скин:</Text>
                             <div className="skin-card" style={{paddingBottom:'15.02px', marginTop:'6px'}}>
                                 <img src={cancel} alt="" style={{marginLeft: '5px'}}/>
@@ -171,7 +213,7 @@ export const Home = ({ id, setStatus, setBotActive, setBotLevel, setBoardSize, r
                                                   
                             </Card>
                             
-                            <Card className='fon2' onClick={() => setActiveModal('smallBoardWithFriend')} style={{marginTop:'0px',marginLeft:'8px',marginBottom:'16px'}}>
+                            <Card className='fon2' onClick={() => setActiveModal('smallBoard')} style={{marginTop:'0px',marginLeft:'8px',marginBottom:'16px'}}>
                                 <div className="player-game">
                                     <Text className="name-card-home" style={{color: 'white', marginLeft: '12px'}}>C другом</Text>
                                     <div className="icon-player">
@@ -192,7 +234,7 @@ export const Home = ({ id, setStatus, setBotActive, setBotLevel, setBoardSize, r
 
                         <CardGrid size="s"> 
 
-                            <Card className="fon1" onClick={() => setActiveModal('bigBoardWithFriend')}>
+                            <Card className="fon1" onClick={() => setActiveModal('bigBoardRobot')}>
                                 <div className="bot-game">
                                     <Text className="name-card-home" style={{color: 'white', marginLeft: '12px'}}>C ботом</Text>
                                     <div className="icon-player-big">
@@ -210,7 +252,7 @@ export const Home = ({ id, setStatus, setBotActive, setBotLevel, setBoardSize, r
                                 </div>                       
                             </Card>
 
-                            <Card className='fon3' onClick={handle2PlayerOnlineClick} style={{marginTop:'0px',marginLeft:'8px',marginBottom:'16px'}}>
+                            <Card className='fon3' onClick={() => setActiveModal('bigBoardOnline')} style={{marginTop:'0px',marginLeft:'8px',marginBottom:'16px'}}>
                                 <div className="online-game">
                                     <Text className="name-card-home" style={{color: 'white', marginLeft: '12px'}}>По сети</Text>
                                     <div className="icon-player">

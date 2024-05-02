@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { calculateWinner, findBoardsWon } from "./CalculateWinner";
-import SmallBoard from "./SmallBoard";
+import SmallBoard from "./Smallboard";
 import { minMaxMove } from "../../AI/Ai";
 
 import tic from '../../assets/tic.svg';
 import tac from '../../assets/tac.svg';
-
+//
 const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
   
   const [ticPlayerScore, setTicPlayerScore] = useState(0);
@@ -180,15 +180,16 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
   }
 
   return (
+   
     <div 
+      className="big-board-game"
       onClick={() => PlayAgain()}
       style={{ 
         display: 'flex', 
         flexDirection: 'column', 
         alignItems: 'center', 
         width: '100%', 
-        height: '100vh', 
-        justifyContent: 'center' 
+        marginTop:'30px'
       }} >
       {/* <div className="status">{status}</div> */}
 
@@ -197,9 +198,9 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
           <img src={tic} className='tic' alt="tic" />
         </div>
 
-        <h1 className="score">
+        <div className="score">
           <div> {ticPlayerScore}</div> <div> : </div> <div> {tacPlayerScore} </div>
-        </h1>
+        </div>
 
         <div className={`sides ${!xNext ? 'active' : ''}`}>
           <img src={tac} className='tac' alt="tac" />

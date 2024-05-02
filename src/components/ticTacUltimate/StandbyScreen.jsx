@@ -1,13 +1,27 @@
 import { useState, useEffect } from 'react';
 
-import { Panel, PanelHeader, Button, Group, ModalRoot, ModalCard, SplitLayout } from '@vkontakte/vkui';
+import { Panel, PanelHeader, PanelHeaderButton } from '@vkontakte/vkui';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 
+import { Icon28ChevronBack } from '@vkontakte/icons'
+
 const StandbyScreen = () => {
+  const routeNavigator = useRouteNavigator();
+  
   return (
-    <div style={{height: '100%', width: '100%'}}>
-      Wait...
-    </div>
+    <Panel>
+      <PanelHeader
+        before={
+          <PanelHeaderButton onClick={() => routeNavigator.push('/')}>
+            <Icon28ChevronBack />
+          </PanelHeaderButton>
+        }
+      >
+        tic-tac-online
+      </PanelHeader>
+
+        wait oponent...
+    </Panel>
   );
 }
 

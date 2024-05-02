@@ -59,22 +59,28 @@
 }
 
 .vkuiInternalCardGrid--size-m .vkuiCard:hover{
-    outline:2px solid rgb(16, 180, 167);
+    /* outline:2px solid rgb(16, 180, 167); */
     cursor: pointer;
+    opacity: 0.8;
 }
 .vkuiInternalCardGrid--size-s .vkuiCard:hover{
-    outline:2px solid rgb(16, 180, 167);
+    /* outline:2px solid rgb(16, 180, 167); */
     cursor: pointer;
+    opacity:0.8;
+
 }
 .vkuiInternalCardGrid--size-s .vkuiCard:active{
-    outline:2px solid rgb(16, 180, 167);
+    /* outline:2px solid rgb(16, 180, 167); */
+    opacity: 0.6;
 }
 .vkuiInternalCardGrid--size-m .vkuiCard:active{
-    outline:2px solid rgb(16, 180, 167);
+    /* outline:2px solid rgb(16, 180, 167); */
+    opacity: 0.6;
 }
 .fon2{
      background-image: url(../../assets/fon2.png);
      background-size: cover;
+ 
 }
 .fon3{
     background-image: url(../../assets/fon3.png);

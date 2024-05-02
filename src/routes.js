@@ -15,9 +15,8 @@ export const DEFAULT_VIEW_PANELS = {
   SMALL_BOARD: 'smallBoard',
   BIG_BOARD: 'bigBoard',
   ONLINE_BIG_BOARD: 'OnlineBigBoard',
-  NETWORK_MENU: 'networkMenu',
-  HOST_MENU: 'hostMenu',
-  JOIN_MENU: 'joinMenu',
+  LEADERBOARD: 'leaderboard',
+  SHOP: 'shop',
 };
 
 export const routes = RoutesConfig.create([
@@ -27,8 +26,8 @@ export const routes = RoutesConfig.create([
       createPanel(DEFAULT_VIEW_PANELS.BIG_BOARD, `/${DEFAULT_VIEW_PANELS.BIG_BOARD}`, []),
       createPanel(DEFAULT_VIEW_PANELS.SMALL_BOARD, `/${DEFAULT_VIEW_PANELS.SMALL_BOARD}`, []),
       createPanel(DEFAULT_VIEW_PANELS.ONLINE_BIG_BOARD, `/${DEFAULT_VIEW_PANELS.ONLINE_BIG_BOARD}`, []),
-      createPanel(DEFAULT_VIEW_PANELS.HOST_MENU, `/${DEFAULT_VIEW_PANELS.HOST_MENU}`, []),
-      createPanel(DEFAULT_VIEW_PANELS.JOIN_MENU, `/${DEFAULT_VIEW_PANELS.JOIN_MENU}`, []),
+      createPanel(DEFAULT_VIEW_PANELS.LEADERBOARD, `/${DEFAULT_VIEW_PANELS.LEADERBOARD}`, []),
+      createPanel(DEFAULT_VIEW_PANELS.SHOP, `/${DEFAULT_VIEW_PANELS.SHOP}`, []),
     ]),
   ]),
 ]);
