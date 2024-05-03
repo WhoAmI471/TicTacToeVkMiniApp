@@ -1,34 +1,33 @@
 #smallBoard {
-    color: white;
-    height: 100vh;
+  color: white;
+  height: 100vh;
 }
-.panel-big-board{
-    background-size: cover;
-    height: 100vh;
+.panel-big-board {
+  background-size: cover;
+  height: 100vh;
 }
 .panel-board {
-    background-size: cover;
-    height: 100vh;
+  background-size: cover;
+  height: 100vh;
 }
 
 .blue {
-    background-image:url(/src/assets/background-blue.png);
+  background-image: url(/src/assets/background-blue.png);
 }
 
 .red {
-    background-image:url(/src/assets/background-red.png);
+  background-image: url(/src/assets/background-red.png);
 }
 
 .green {
-
-    background-image:url(/src/assets/background-green.png);
+  background-image: url(/src/assets/background-green.png);
 }
 
 .vkuiPanelHeader__in {
-    background-color: rgba(0, 0, 0, 0);
-    color: white;
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
 }
 
 .vkuiPanelHeaderButton--vkcom {
-    color: white;
+  color: white;
 }

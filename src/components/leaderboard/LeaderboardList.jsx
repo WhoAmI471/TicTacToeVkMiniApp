@@ -1,7 +1,7 @@
-import React from 'react';
-import LeaderboardItem from './leaderboardItem';
+import React from "react";
+import LeaderboardItem from "./leaderboardItem";
 
-const LeaderboardList = ({ data }) => {
+const LeaderboardList = ({ data, userId }) => {
   return (
     <div>
       {data.map((item, index) => (
@@ -12,6 +12,7 @@ const LeaderboardList = ({ data }) => {
           lastName={item.last_name}
           score={item.score}
           imgUrl={item.img_url}
+          itsMe={userId === item.user_id}
         />
       ))}
     </div>

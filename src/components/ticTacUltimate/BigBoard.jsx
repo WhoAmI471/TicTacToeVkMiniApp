@@ -3,11 +3,10 @@ import { calculateWinner, findBoardsWon } from "./CalculateWinner";
 import SmallBoard from "./Smallboard";
 import { minMaxMove } from "../../AI/Ai";
 
-import tic from '../../assets/tic.svg';
-import tac from '../../assets/tac.svg';
+import tic from "../../assets/tic.svg";
+import tac from "../../assets/tac.svg";
 //
 const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
-  
   const [ticPlayerScore, setTicPlayerScore] = useState(0);
   const [tacPlayerScore, setTacPlayerScore] = useState(0);
 
@@ -19,7 +18,7 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
   }
   const [gamePosition, setGamePosition] = useState(initalPosition);
   const [lastMove, setLastMove] = useState(null);
-  
+
   const opponentSymbol = playerIsX ? tac : tic;
   const mySymbol = !playerIsX ? tac : tic;
 
@@ -42,12 +41,17 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
   if (appStatus !== "localGame" && xNext !== playerIsX) {
     status = "Waiting for opponent to move...";
   }
-  const currentPlayer = playerIsX ? 'tic' : 'tac';
+  const currentPlayer = playerIsX ? "tic" : "tac";
 
   function updateGame(board, position, x = xNext) {
     if (appStatus === "aiGame" && xNext !== playerIsX) return;
-    if (appStatus !== "localGame" && appStatus !== "aiGame" && xNext !== playerIsX) return;
-  
+    if (
+      appStatus !== "localGame" &&
+      appStatus !== "aiGame" &&
+      xNext !== playerIsX
+    )
+      return;
+
     let nextPosition = structuredClone(gamePosition);
 
     let player = tic;
@@ -60,38 +64,42 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
     } else {
       nextPosition[board][position] = mySymbol;
     }
-    
+
     setGamePosition(nextPosition);
     setLastMove(position);
-  
-    console.log(`${currentPlayer} made a move nextPosition[${board}][${position}]`);
+
+    console.log(
+      `${currentPlayer} made a move nextPosition[${board}][${position}]`
+    );
 
     if (socket) {
       console.log(`SendMove board: ${board}, position: ${position}`);
-      socket.send(JSON.stringify({
-        method: "opponentMove",
-        turn: opponentSymbol,
-        board: board,
-        position: position,
-      }));
+      socket.send(
+        JSON.stringify({
+          method: "opponentMove",
+          turn: opponentSymbol,
+          board: board,
+          position: position,
+        })
+      );
     }
     return nextPosition[board];
   }
-  
+
   useEffect(() => {
     if (socket) {
       socket.onmessage = (event) => {
         const response = JSON.parse(event.data);
-  
+
         if (response.method === "opponentMove") {
-          setGamePosition(prevGamePosition => {
+          setGamePosition((prevGamePosition) => {
             const nextPosition = structuredClone(prevGamePosition);
             nextPosition[response.board][response.position] = opponentSymbol;
             setLastMove(response.position);
 
             return nextPosition;
           });
-        } 
+        }
       };
     }
   }, [socket]);
@@ -105,7 +113,7 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
     currentGame = Array(9).fill(false);
     currentGame[lastMove] = true;
   }
-  
+
   if (xNext !== playerIsX && appStatus === "aiGame" && !overallWinner) {
     const robotMove = minMaxMove(lastMove + 0, gamePosition, xNext, robot)[1];
     console.log(robotMove);
@@ -121,18 +129,17 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
   useEffect(() => {
     if (typeof overallWinner === "object") {
       setHaveWinner(true);
-      if (xNext){
+      if (xNext) {
         setTacPlayerScore(tacPlayerScore + 1);
       } else {
         setTicPlayerScore(ticPlayerScore + 1);
       }
-    } 
-      // else if (overallWinner === "draw") {
-      //   status =
-      //     "No more legal moves. The game is a draw. Would you like to play again?";
-      // }
-  }, [xNext])
-  
+    }
+    // else if (overallWinner === "draw") {
+    //   status =
+    //     "No more legal moves. The game is a draw. Would you like to play again?";
+    // }
+  }, [xNext]);
 
   let rows = [];
   for (let i = 0; i < 3; i++) {
@@ -155,12 +162,15 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
           squares={gamePosition[k]}
           boardState={boardState}
           key={k + "SmallBoard"}
-        />
+        />,
       ];
       if (boardsFinished[k] && boardsFinished[k] !== "draw") {
         children.push(
           <div className="bigScore" key={k + "bigScore"}>
-            <img src={boardsFinished[k]} style={{width: '100%', height: '100%'}}/>
+            <img
+              src={boardsFinished[k]}
+              style={{ width: "100%", height: "100%" }}
+            />
           </div>
         );
       }
@@ -177,33 +187,34 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
       setLastMove(null);
       setHaveWinner(false);
     }
-  }
+  };
 
   return (
-   
-    <div 
+    <div
       className="big-board-game"
       onClick={() => PlayAgain()}
-      style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        width: '100%', 
-        marginTop:'30px'
-      }} >
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+        marginTop: "30px",
+      }}
+    >
       {/* <div className="status">{status}</div> */}
 
       <div className="info">
-        <div className={`sides ${xNext ? 'active' : ''}`}>
-          <img src={tic} className='tic' alt="tic" />
+        <div className={`sides ${xNext ? "active" : ""}`}>
+          <img src={tic} className="tic" alt="tic" />
         </div>
 
         <div className="score">
-          <div> {ticPlayerScore}</div> <div> : </div> <div> {tacPlayerScore} </div>
+          <div> {ticPlayerScore}</div> <div> : </div>{" "}
+          <div> {tacPlayerScore} </div>
         </div>
 
-        <div className={`sides ${!xNext ? 'active' : ''}`}>
-          <img src={tac} className='tac' alt="tac" />
+        <div className={`sides ${!xNext ? "active" : ""}`}>
+          <img src={tac} className="tac" alt="tac" />
         </div>
       </div>
 
@@ -212,6 +223,6 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
       </table>
     </div>
   );
-}
+};
 
 export default BigBoard;

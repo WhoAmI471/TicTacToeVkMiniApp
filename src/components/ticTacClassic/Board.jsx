@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import Square from './Square';
-import tic from '../../assets/tic.svg';
-import tac from '../../assets/tac.svg';
-import './Board.css';
+import React, { useState, useEffect } from "react";
+import Square from "./Square";
+import tic from "../../assets/tic.svg";
+import tac from "../../assets/tac.svg";
+import "./Board.css";
 
-const Board = ({botActive, botLevel, boardSize}) => {
+const Board = ({ botActive, botLevel, boardSize }) => {
   const [ticPlayer, setTicPlayer] = useState(0);
   const [tacPlayer, setTacPlayer] = useState(0);
 
-  const [squares, setSquares] = useState(Array(boardSize * boardSize).fill(null));
+  const [squares, setSquares] = useState(
+    Array(boardSize * boardSize).fill(null)
+  );
   const [isNextX, setIsNextX] = useState(true);
-  
+
   const [winner, setWinner] = useState(null);
 
   const checkWinnerCombinationsThree = (boardSize) => {
@@ -19,25 +21,39 @@ const Board = ({botActive, botLevel, boardSize}) => {
     // Горизонтальные комбинации
     for (let i = 0; i < boardSize; i++) {
       for (let j = 0; j <= boardSize - 3; j++) {
-        combinations.push(Array.from({ length: 3 }, (_, index) => i * boardSize + j + index));
+        combinations.push(
+          Array.from({ length: 3 }, (_, index) => i * boardSize + j + index)
+        );
       }
     }
-  
+
     // Вертикальные комбинации
     for (let i = 0; i <= boardSize - 3; i++) {
       for (let j = 0; j < boardSize; j++) {
-        combinations.push(Array.from({ length: 3 }, (_, index) => (i + index) * boardSize + j));
+        combinations.push(
+          Array.from({ length: 3 }, (_, index) => (i + index) * boardSize + j)
+        );
       }
     }
-  
+
     // Диагональные комбинации
     for (let i = 0; i <= boardSize - 3; i++) {
       for (let j = 0; j <= boardSize - 3; j++) {
-        combinations.push(Array.from({ length: 3 }, (_, index) => (i + index) * (boardSize + 1) + j));
-        combinations.push(Array.from({ length: 3 }, (_, index) => (i + index) * (boardSize - 1) + j + 2));
+        combinations.push(
+          Array.from(
+            { length: 3 },
+            (_, index) => (i + index) * (boardSize + 1) + j
+          )
+        );
+        combinations.push(
+          Array.from(
+            { length: 3 },
+            (_, index) => (i + index) * (boardSize - 1) + j + 2
+          )
+        );
       }
     }
-  
+
     return combinations;
   };
 
@@ -47,22 +63,36 @@ const Board = ({botActive, botLevel, boardSize}) => {
     // Горизонтальные комбинации
     for (let i = 0; i < boardSize; i++) {
       for (let j = 0; j <= boardSize - 4; j++) {
-        combinations.push(Array.from({ length: 4 }, (_, index) => i * boardSize + j + index));
+        combinations.push(
+          Array.from({ length: 4 }, (_, index) => i * boardSize + j + index)
+        );
       }
     }
 
     // Вертикальные комбинации
     for (let i = 0; i <= boardSize - 4; i++) {
       for (let j = 0; j < boardSize; j++) {
-        combinations.push(Array.from({ length: 4 }, (_, index) => (i + index) * boardSize + j));
+        combinations.push(
+          Array.from({ length: 4 }, (_, index) => (i + index) * boardSize + j)
+        );
       }
     }
 
     // Диагональные комбинации
     for (let i = 0; i <= boardSize - 4; i++) {
       for (let j = 0; j <= boardSize - 4; j++) {
-        combinations.push(Array.from({ length: 4 }, (_, index) => (i + index) * (boardSize + 1) + j));
-        combinations.push(Array.from({ length: 4 }, (_, index) => (i + index) * (boardSize - 1) + j + 3));
+        combinations.push(
+          Array.from(
+            { length: 4 },
+            (_, index) => (i + index) * (boardSize + 1) + j
+          )
+        );
+        combinations.push(
+          Array.from(
+            { length: 4 },
+            (_, index) => (i + index) * (boardSize - 1) + j + 3
+          )
+        );
       }
     }
 
@@ -70,41 +100,50 @@ const Board = ({botActive, botLevel, boardSize}) => {
   };
 
   // Shuffle the linesToCheck array
-  const linesToCheck = boardSize === 3 
-  ? checkWinnerCombinationsThree(boardSize) 
-  : checkWinnerCombinations(boardSize);
+  const linesToCheck =
+    boardSize === 3
+      ? checkWinnerCombinationsThree(boardSize)
+      : checkWinnerCombinations(boardSize);
 
   useEffect(() => {
-    if (botActive && !isNextX){
+    if (botActive && !isNextX) {
       makeBotMove();
     }
   }, [botActive, isNextX]);
 
-
   const checkWinner = () => {
-    const winnerCombinations = boardSize === 3 
-    ? checkWinnerCombinationsThree(boardSize) 
-    : checkWinnerCombinations(boardSize);
+    const winnerCombinations =
+      boardSize === 3
+        ? checkWinnerCombinationsThree(boardSize)
+        : checkWinnerCombinations(boardSize);
 
     console.log(winnerCombinations);
 
     if (boardSize == 3) {
       for (let combination of winnerCombinations) {
         const [a, b, c] = combination;
-        if (squares[a] && squares[a] === squares[b] && squares[b] === squares[c]) {
+        if (
+          squares[a] &&
+          squares[a] === squares[b] &&
+          squares[b] === squares[c]
+        ) {
           return squares[a] === tic ? tic : tac;
         }
       }
     } else {
       for (let combination of winnerCombinations) {
         const [a, b, c, d] = combination;
-        if (squares[a] && squares[a] === squares[b] && squares[b] === squares[c] && squares[c] === squares[d]) {
+        if (
+          squares[a] &&
+          squares[a] === squares[b] &&
+          squares[b] === squares[c] &&
+          squares[c] === squares[d]
+        ) {
           return squares[a] === tic ? tic : tac;
         }
       }
-
     }
-    
+
     return null;
   };
 
@@ -115,20 +154,20 @@ const Board = ({botActive, botLevel, boardSize}) => {
       }
       return acc;
     }, []);
-  
+
     let randomIndex = null;
     let randomSquare = null;
-  
+
     switch (botLevel) {
-      case 'easy':
-        console.log('easy');
+      case "easy":
+        console.log("easy");
         randomIndex = Math.floor(Math.random() * emptySquares.length);
         randomSquare = emptySquares[randomIndex];
         setSquareValue(randomSquare);
         break;
-  
-      case 'medium':
-        console.log('medium');
+
+      case "medium":
+        console.log("medium");
         // Check if the bot can win in the next move
         for (let i = 0; i < emptySquares.length; i++) {
           const squareIndex = emptySquares[i];
@@ -139,7 +178,7 @@ const Board = ({botActive, botLevel, boardSize}) => {
             return;
           }
         }
-  
+
         // Check if the user can win in the next move and block them
         for (let i = 0; i < emptySquares.length; i++) {
           const squareIndex = emptySquares[i];
@@ -154,9 +193,9 @@ const Board = ({botActive, botLevel, boardSize}) => {
         randomSquare = emptySquares[randomIndex];
         setSquareValue(randomSquare);
         break;
-  
-      case 'hard':
-        console.log('hard');
+
+      case "hard":
+        console.log("hard");
         // Check for possible winning moves for the bot and make them
         for (let i = 0; i < emptySquares.length; i++) {
           const squareIndex = emptySquares[i];
@@ -186,7 +225,7 @@ const Board = ({botActive, botLevel, boardSize}) => {
         for (let line of linesToCheck) {
           const [a, b, c] = line;
           const lineSquares = [squares[a], squares[b], squares[c]];
-          const emptyIndex = lineSquares.findIndex(square => !square);
+          const emptyIndex = lineSquares.findIndex((square) => !square);
           if (emptyIndex !== -1) {
             const squareIndex = line[emptyIndex];
             const newSquares = squares.slice();
@@ -202,7 +241,7 @@ const Board = ({botActive, botLevel, boardSize}) => {
         for (let line of linesToCheck) {
           const [a, b, c] = line;
           const lineSquares = [squares[a], squares[b], squares[c]];
-          const emptyIndex = lineSquares.findIndex(square => !square);
+          const emptyIndex = lineSquares.findIndex((square) => !square);
           if (emptyIndex !== -1) {
             const squareIndex = line[emptyIndex];
             const newSquares = squares.slice();
@@ -218,7 +257,7 @@ const Board = ({botActive, botLevel, boardSize}) => {
         for (let line of linesToCheck) {
           const [a, b, c] = line;
           const lineSquares = [squares[a], squares[b], squares[c]];
-          const emptyIndex = lineSquares.findIndex(square => !square);
+          const emptyIndex = lineSquares.findIndex((square) => !square);
           if (emptyIndex !== -1) {
             const squareIndex = line[emptyIndex];
             const newSquares = squares.slice();
@@ -243,7 +282,7 @@ const Board = ({botActive, botLevel, boardSize}) => {
         setSquareValue(randomSquare);
 
         break;
-  
+
       default:
         break;
     }
@@ -284,7 +323,7 @@ const Board = ({botActive, botLevel, boardSize}) => {
       setSquares(Array(boardSize * boardSize).fill(null));
       setIsNextX(true);
       console.log("new");
-      
+
       shuffleArray(linesToCheck);
     } else if (squares.every((square) => square !== null)) {
       setIsNextX(true);
@@ -292,41 +331,65 @@ const Board = ({botActive, botLevel, boardSize}) => {
     }
   }, [squares, winner]);
 
-  const squareSize = `${(200 / boardSize)}px`; // Вычисляем размер клетки
+  const squareSize = `${200 / boardSize}px`; // Вычисляем размер клетки
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <div className="info">
-        <div className={`sides ${isNextX ? 'active' : ''}`} >
-          <img style={{width: '5vmin',height:'5vmin'}} src={tic} className='tic' alt="tic" />
+        <div className={`sides ${isNextX ? "active" : ""}`}>
+          <img
+            style={{ width: "5vmin", height: "5vmin" }}
+            src={tic}
+            className="tic"
+            alt="tic"
+          />
         </div>
 
         <div className="score">
           <div> {ticPlayer}</div> <div> : </div> <div> {tacPlayer} </div>
         </div>
 
-        <div className={`sides ${!isNextX ? 'active' : ''}`}>
-          <img style={{width: '5vmin',height:'5vmin'}} src={tac} className='tac' alt="tac" />
+        <div className={`sides ${!isNextX ? "active" : ""}`}>
+          <img
+            style={{ width: "5vmin", height: "5vmin" }}
+            src={tac}
+            className="tac"
+            alt="tac"
+          />
         </div>
       </div>
 
-    <div className='board-game'>
-       <div className="board" style={{ 
-        display: 'grid',
-        gridTemplateColumns: `repeat(${boardSize}, auto`,
-        gridTemplateRows: `repeat(${boardSize}, auto)`,
-        gap: '5px',
-        justifyContent: 'space-around',
-        marginRight: '5px'
-      }}>
-        {squares.map((square, index) => (
-          <Square key={index} value={square} setSquareValue={() => setSquareValue(index)} size={squareSize} />
-        ))}
+      <div className="board-game">
+        <div
+          className="board"
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${boardSize}, auto`,
+            gridTemplateRows: `repeat(${boardSize}, auto)`,
+            gap: "5px",
+            justifyContent: "space-around",
+            marginRight: "5px",
+          }}
+        >
+          {squares.map((square, index) => (
+            <Square
+              key={index}
+              value={square}
+              setSquareValue={() => setSquareValue(index)}
+              size={squareSize}
+            />
+          ))}
+        </div>
       </div>
     </div>
-     
-    </div>
   );
-}
+};
 
 export default Board;

@@ -1,8 +1,11 @@
 import { calculateOverallScore } from "./CalculatePositionScore";
-import { findBoardsWon, calculateWinner } from "../components/ticTacUltimate/CalculateWinner";
+import {
+  findBoardsWon,
+  calculateWinner,
+} from "../components/ticTacUltimate/CalculateWinner";
 
-import tic from '../assets/tic.svg';
-import tac from '../assets/tac.svg';
+import tic from "../assets/tic.svg";
+import tac from "../assets/tac.svg";
 
 function possibleMoves(lastMove, gamePosition) {
   let finishedBoards = findBoardsWon(gamePosition);

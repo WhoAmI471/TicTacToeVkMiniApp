@@ -4,7 +4,7 @@ export default function SmallBoard({
   updateGame,
   thisBoard,
   squares,
-  boardState
+  boardState,
 }) {
   function handleClick(i) {
     if (squares[i] || boardState !== "current") {

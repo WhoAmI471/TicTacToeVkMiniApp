@@ -1,24 +1,28 @@
-import { useState, useEffect } from 'react';
-import bridge from '@vkontakte/vk-bridge';
-import { View, SplitLayout, SplitCol, ScreenSpinner, ModalRoot, ModalCard, Group, Button } from '@vkontakte/vkui';
-import { useActiveVkuiLocation, useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import { useState, useEffect } from "react";
+import bridge from "@vkontakte/vk-bridge";
+import { View, SplitLayout, SplitCol, ScreenSpinner } from "@vkontakte/vkui";
 
-import { DEFAULT_VIEW_PANELS } from './routes';
+import {
+  useActiveVkuiLocation,
+  useRouteNavigator,
+} from "@vkontakte/vk-mini-apps-router";
 
-import { Home } from './panels/Home/Home';
-import { SmallBoardGame } from './panels/SmallBoardGame/SmallBoardGame';
+import { DEFAULT_VIEW_PANELS } from "./routes";
+
+import { Home } from "./panels/Home/Home";
+import { SmallBoardGame } from "./panels/SmallBoardGame/SmallBoardGame";
 import { Shop } from "./panels/Shop/Shop";
-import { BigBoardGame } from './panels/BigBoardGame/BigBoardGame';
+import { BigBoardGame } from "./panels/BigBoardGame/BigBoardGame";
 
 import WebSocketComponent from "./components/ticTacUltimate/WebSocketComponent";
-import { Leaderboard } from './panels';
+import { Leaderboard } from "./panels";
 
 export const App = () => {
-  const { panel: activePanel = DEFAULT_VIEW_PANELS.WELCOME_MENU } = useActiveVkuiLocation();
-  const [fetchedUser, setUser] = useState();
-  const [sortedUsersStats, setSortedUserStats] = useState(null);
+  const { panel: activePanel = DEFAULT_VIEW_PANELS.WELCOME_MENU } =
+    useActiveVkuiLocation();
+  const [fetchedUser, setUser] = useState(null);
+  const [fetchedUsersStats, setSortedUserStats] = useState(null);
   const [popout, setPopout] = useState(<ScreenSpinner size="large" />);
-
 
   const [robot, setRobot] = useState(2);
   const [status, setStatus] = useState("home");
@@ -30,8 +34,7 @@ export const App = () => {
   const [botLevel, setBotLevel] = useState(2);
   const [boardSize, setBoardSize] = useState(2);
 
-  const [currentBack, setCurrentBack] = useState('blue');
-
+  const [currentBack, setCurrentBack] = useState("blue");
 
   function statusUpdate(newStatus) {
     setStatus(newStatus);
@@ -48,21 +51,19 @@ export const App = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const user = await bridge.send('VKWebAppGetUserInfo');
+      const user = await bridge.send("VKWebAppGetUserInfo");
       setUser(user);
       setPopout(null);
     }
     fetchData();
-    SortedUsersStats();
   }, []);
 
-
-        
-  async function SendLinkGame () {
+  async function SendLinkGame() {
     bridge.send("VKWebAppAddToChat", {
-      action_title: 'Показать погоду'
+      action_title: "Показать погоду",
     });
-    bridge.send("VKWebAppAddToChatResult")
+    bridge
+      .send("VKWebAppAddToChatResult")
       .then((data) => {
         if (data.result) {
           // Обработка события в случае успеха
@@ -79,53 +80,55 @@ export const App = () => {
 
   async function CreateUserStats(user_id, name, last_name, img_url) {
     try {
-      const response = await fetch(`/leaderboard/${user_id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: 0,
-          name: name,
-          last_name: last_name,
-          img_url: img_url,
-          position: 1, // стартовая позиция
-          score: 0 // стартовое количество очков
-        }),
-        mode: 'no-cors'
-      });
+      const response = await fetch(
+        `http://127.0.0.1:8000/leaderboard/${user_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: 0,
+            name: name,
+            last_name: last_name,
+            img_url: img_url,
+            position: 1, // стартовая позиция
+            score: 0, // стартовое количество очков
+          }),
+        }
+      );
       // const data = await response.json();
-      console.log("done " + response.json());
+      console.log(response.json());
       // Обработка ответа
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
-  
+
   async function GetUserStats(user_id) {
     try {
       const response = await fetch(`/leaderboard/${user_id}`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        mode: 'no-cors'
+        mode: "no-cors",
       });
       const data = await response.json();
       console.log(data);
       return data;
       // Обработка ответа
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   }
 
   async function SortedUsersStats() {
     try {
-      const response = await fetch(`/leaderboard-sort`, {
-        method: 'PUT',
+      const response = await fetch(`http://127.0.0.1:8000/leaderboard-sort`, {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
@@ -134,25 +137,32 @@ export const App = () => {
       setSortedUserStats(data);
       // Обработка ответа
     } catch (error) {
-      // console.error('Error:', error);
+      console.log("Error:" + error);
     }
   }
 
   useEffect(() => {
-    if (fetchedUser){
+    if (fetchedUser) {
       console.log(fetchedUser);
       setClientId(fetchedUser.id);
-      // CreateUserStats(fetchedUser.id, fetchedUser.first_name, fetchedUser.last_name, fetchedUser.photo_100);
+      CreateUserStats(
+        fetchedUser.id,
+        fetchedUser.first_name,
+        fetchedUser.last_name,
+        fetchedUser.photo_100
+      );
+
+      SortedUsersStats();
       // setClientId(Date.now());
     }
-  }, [fetchedUser])
+  }, [fetchedUser]);
 
   return (
     <SplitLayout popout={popout}>
       <SplitCol>
         <View activePanel={activePanel}>
-          <Home 
-            id="home" 
+          <Home
+            id="home"
             setStatus={statusUpdate}
             setBotActive={setBotActive}
             setBotLevel={setBotLevel}
@@ -162,10 +172,14 @@ export const App = () => {
             setPanelHeaderText={setPanelHeaderText}
             setCurrentBack={setCurrentBack}
           />
-          <Shop id="shop"/>
-          <Leaderboard id="leaderboard" data={sortedUsersStats}/>
-          <SmallBoardGame 
-            id="smallBoard" 
+          <Shop id="shop" />
+          <Leaderboard
+            id="leaderboard"
+            data={fetchedUsersStats}
+            userId={fetchedUser ? fetchedUser.id : ""}
+          />
+          <SmallBoardGame
+            id="smallBoard"
             botActive={botActive}
             botLevel={botLevel}
             boardSize={boardSize}

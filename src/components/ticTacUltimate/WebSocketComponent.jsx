@@ -1,21 +1,27 @@
 import React, { useState, useEffect } from "react";
 
-import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
+import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 
 import StandbyScreen from "./StandbyScreen";
 import { BigBoardGame } from "../../panels/BigBoardGame/BigBoardGame";
 
-const WebSocketComponent = ({ panelHeaderText, robot, appStatus, clientId, currentBack }) => {
+const WebSocketComponent = ({
+  panelHeaderText,
+  robot,
+  appStatus,
+  clientId,
+  currentBack,
+}) => {
   const routeNavigator = useRouteNavigator();
 
   const [ws, setWs] = useState(null);
   const [isOpponentFound, setIsOpponentFound] = useState(false);
   const [symbol, setSymbol] = useState(null);
   const [turnNext, setTurnNext] = useState(null);
-  // http://127.0.0.1:8000 
+  // http://127.0.0.1:8000
   // wss://tictactoevkminiappwebsocket.onrender.com
   useEffect(() => {
-    const socket = new WebSocket(`wss://tictactoevkminiappwebsocket.onrender.com/ws/${clientId}/0`);
+    const socket = new WebSocket(`ws://127.0.0.1:8000/ws/${clientId}/0`);
     setWs(socket);
 
     return () => {
@@ -25,13 +31,13 @@ const WebSocketComponent = ({ panelHeaderText, robot, appStatus, clientId, curre
 
   useEffect(() => {
     if (!ws) return;
-  
+
     // console.log("kajsdhfiuasnviavouiewrnkldjansoinanvpewunpuroi");
     ws.onmessage = (event) => {
       const response = JSON.parse(event.data);
-  
+
       console.log(response);
-  
+
       if (response.method === "join") {
         setIsOpponentFound(true);
         setSymbol(response.symbol);
@@ -39,15 +45,15 @@ const WebSocketComponent = ({ panelHeaderText, robot, appStatus, clientId, curre
         console.log("join");
       }
     };
-  
+
     ws.onclose = () => {
       console.log("WebSocket disconnected");
-      routeNavigator.push('/');
+      routeNavigator.push("/");
     };
-  
+
     return () => {
       ws.close();
-      routeNavigator.push('/');
+      routeNavigator.push("/");
     };
   }, [ws]);
 
@@ -55,7 +61,7 @@ const WebSocketComponent = ({ panelHeaderText, robot, appStatus, clientId, curre
     <div>
       {isOpponentFound ? (
         // <>
-        //   <div className="big-board-game">       
+        //   <div className="big-board-game">
         //     <BigBoard
         //       robot={robot}
         //       appStatus={appStatus}
@@ -65,14 +71,15 @@ const WebSocketComponent = ({ panelHeaderText, robot, appStatus, clientId, curre
         //     />
         //   </div>
         // </>
-        <BigBoardGame 
-          panelHeaderText={panelHeaderText} 
-          socket={ws} 
-          robot={robot} 
-          appStatus={appStatus} 
-          playerIsX={symbol === 'X'} 
-          turnNext={turnNext} 
-          currentBack={currentBack} />
+        <BigBoardGame
+          panelHeaderText={panelHeaderText}
+          socket={ws}
+          robot={robot}
+          appStatus={appStatus}
+          playerIsX={symbol === "X"}
+          turnNext={turnNext}
+          currentBack={currentBack}
+        />
       ) : (
         <StandbyScreen />
       )}

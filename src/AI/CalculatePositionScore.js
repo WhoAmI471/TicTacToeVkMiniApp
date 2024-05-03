@@ -1,8 +1,7 @@
 import { lines } from "../components/ticTacUltimate/CalculateWinner";
 
-import tic from '../assets/tic.svg';
-import tac from '../assets/tac.svg';
-
+import tic from "../assets/tic.svg";
+import tac from "../assets/tac.svg";
 
 export function calculateOverallScore(position) {
   let scores = [];
