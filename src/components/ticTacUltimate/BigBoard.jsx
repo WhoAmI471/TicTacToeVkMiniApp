@@ -6,7 +6,7 @@ import { minMaxMove } from "../../AI/Ai";
 import tic from "../../assets/tic.svg";
 import tac from "../../assets/tac.svg";
 //
-const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
+const BigBoard = ({ socket, robot, appStatus, playerIsX, setWinMatch }) => {
   const [ticPlayerScore, setTicPlayerScore] = useState(0);
   const [tacPlayerScore, setTacPlayerScore] = useState(0);
 
@@ -131,8 +131,12 @@ const BigBoard = ({ socket, robot, appStatus, playerIsX }) => {
       setHaveWinner(true);
       if (xNext) {
         setTacPlayerScore(tacPlayerScore + 1);
+        if (socket && !playerIsX) setWinMatch("win");
+        else if (socket && playerIsX) setWinMatch("loose");
       } else {
         setTicPlayerScore(ticPlayerScore + 1);
+        if (socket && playerIsX) setWinMatch("win");
+        else if (socket && !playerIsX) setWinMatch("loose");
       }
     }
     // else if (overallWinner === "draw") {

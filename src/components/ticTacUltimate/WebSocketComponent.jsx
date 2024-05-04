@@ -11,6 +11,7 @@ const WebSocketComponent = ({
   appStatus,
   clientId,
   currentBack,
+  UpdateUserScore,
 }) => {
   const routeNavigator = useRouteNavigator();
 
@@ -54,23 +55,13 @@ const WebSocketComponent = ({
     return () => {
       ws.close();
       routeNavigator.push("/");
+      console.log("+50");
     };
   }, [ws]);
 
   return (
     <div>
       {isOpponentFound ? (
-        // <>
-        //   <div className="big-board-game">
-        //     <BigBoard
-        //       robot={robot}
-        //       appStatus={appStatus}
-        //       playerIsX={symbol === 'X'}
-        //       socket={ws}
-        //       turnNext={turnNext}
-        //     />
-        //   </div>
-        // </>
         <BigBoardGame
           panelHeaderText={panelHeaderText}
           socket={ws}
@@ -79,6 +70,8 @@ const WebSocketComponent = ({
           playerIsX={symbol === "X"}
           turnNext={turnNext}
           currentBack={currentBack}
+          UpdateUserScore={UpdateUserScore}
+          clientId={clientId}
         />
       ) : (
         <StandbyScreen />

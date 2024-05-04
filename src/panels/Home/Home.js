@@ -35,8 +35,8 @@ export const Home = ({
   setPanelHeaderText,
   setCurrentBack,
 }) => {
-  const [activeModal, setActiveModal] = useState("");
   const routeNavigator = useRouteNavigator();
+  const [activeModal, setActiveModal] = useState("");
 
   const modal = (
     <ModalRoot activeModal={activeModal}>

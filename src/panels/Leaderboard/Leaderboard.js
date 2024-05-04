@@ -1,4 +1,4 @@
-import { Panel, PanelHeader, PanelHeaderButton } from "@vkontakte/vkui";
+import { Panel, PanelHeader, PanelHeaderButton, Text } from "@vkontakte/vkui";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 
 import { Icon28ChevronBack } from "@vkontakte/icons";
@@ -20,7 +20,11 @@ export const Leaderboard = ({ id, data, userId }) => {
       >
         Tic-Tac-Toe
       </PanelHeader>
-      <LeaderboardList data={data} userId={userId} />
+      {data ? (
+        <LeaderboardList data={data} userId={userId} />
+      ) : (
+        <Text>Sorry, list is empty</Text>
+      )}
     </Panel>
   );
 };

@@ -93,7 +93,7 @@ export const App = () => {
             last_name: last_name,
             img_url: img_url,
             position: 1, // стартовая позиция
-            score: 0, // стартовое количество очков
+            score: 500, // стартовое количество очков
           }),
         }
       );
@@ -114,6 +114,26 @@ export const App = () => {
         },
         mode: "no-cors",
       });
+      const data = await response.json();
+      console.log(data);
+      return data;
+      // Обработка ответа
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  async function UpdateUserScore(user_id, outcome) {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/leaderboard/${user_id}/update-points?outcome=${outcome}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       console.log(data);
       return data;
@@ -144,18 +164,30 @@ export const App = () => {
   useEffect(() => {
     if (fetchedUser) {
       console.log(fetchedUser);
-      setClientId(fetchedUser.id);
+      // setClientId(fetchedUser.id);
+      setClientId(Date.now());
+      // CreateUserStats(
+      //   fetchedUser.id,
+      //   fetchedUser.first_name,
+      //   fetchedUser.last_name,
+      //   fetchedUser.photo_100
+      // );
+
+      // SortedUsersStats();
+    }
+  }, [fetchedUser]);
+
+  useEffect(() => {
+    if (clientId) {
       CreateUserStats(
-        fetchedUser.id,
+        clientId,
         fetchedUser.first_name,
         fetchedUser.last_name,
         fetchedUser.photo_100
       );
-
       SortedUsersStats();
-      // setClientId(Date.now());
     }
-  }, [fetchedUser]);
+  }, [clientId]);
 
   return (
     <SplitLayout popout={popout}>
@@ -176,7 +208,7 @@ export const App = () => {
           <Leaderboard
             id="leaderboard"
             data={fetchedUsersStats}
-            userId={fetchedUser ? fetchedUser.id : ""}
+            userId={clientId}
           />
           <SmallBoardGame
             id="smallBoard"
@@ -194,12 +226,13 @@ export const App = () => {
             currentBack={currentBack}
           />
           <WebSocketComponent
-            id="OnlineBigBoard"
+            id="onlineBigBoard"
             panelHeaderText={panelHeaderText}
             robot={robot}
             appStatus={status}
             clientId={clientId}
             currentBack={currentBack}
+            UpdateUserScore={UpdateUserScore}
           />
         </View>
       </SplitCol>

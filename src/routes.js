@@ -14,7 +14,7 @@ export const DEFAULT_VIEW_PANELS = {
   HOME: "home",
   SMALL_BOARD: "smallBoard",
   BIG_BOARD: "bigBoard",
-  ONLINE_BIG_BOARD: "OnlineBigBoard",
+  ONLINE_BIG_BOARD: "onlineBigBoard",
   LEADERBOARD: "leaderboard",
   SHOP: "shop",
 };
