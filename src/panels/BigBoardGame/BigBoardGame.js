@@ -8,7 +8,7 @@ import {
   Spacing,
   Button,
   ModalRoot,
-  ModalCardBase,
+  ModalCard,
   SplitLayout,
 } from "@vkontakte/vkui";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
@@ -36,10 +36,9 @@ export const BigBoardGame = ({
 
   const modal = (
     <ModalRoot activeModal={winMatch}>
-      <ModalCardBase
+      <ModalCard
         id="win"
         onClose={() => setWinMatch(null)}
-        // style={{ width: 450, marginBottom: 20 }}
         header="+50 очков!"
         subheader="Вы выиграли! Продолжайте в том же духе"
         actions={
@@ -53,10 +52,9 @@ export const BigBoardGame = ({
         icon={<Icon56CupOutline />}
       />
 
-      <ModalCardBase
+      <ModalCard
         id="loose"
         onClose={() => setWinMatch(null)}
-        style={{ width: 450, marginBottom: 20 }}
         header="-50 очков!"
         subheader="Вы проиграли! Продолжайте тенироваться"
         actions={
